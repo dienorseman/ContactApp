@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,17 +10,45 @@ import {
 } from "react-native";
 import ContactList from "../components/ContactList";
 import { contactsData } from "../data/contacts";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export default function HomeScreen({ navigation }) {
+  useEffect(function () {
+    getToken();
+    setlocalData(
+      localData.sort((a, b) => {
+        return a.name > b.name;
+      })
+    );
+  }, []);
 
-export default function HomeScreen({navigation}) {
-  const [localData, setlocalData] = useState(
-    contactsData.sort((a, b) => {
-      return a.name > b.name;
-    })
-  );
+  const [localData, setlocalData] = useState([]);
 
+  let headers = {};
+  let token = "";
 
-  const [searchData, setSearchData] = useState({});
+  async function getToken() {
+    try {
+      token = await AsyncStorage.getItem("token");
+      headers = {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+
+      console.log("\ntoken:" + token + "\n");
+      axios
+        .get("http://192.168.1.144:8000/contact/contacts/", headers)
+        .then((res) => {
+          setlocalData(res.data);
+        })
+        .catch((erros) => console.log(erros));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <View style={styles.container}>
@@ -31,16 +59,13 @@ export default function HomeScreen({navigation}) {
         }}
       />
       <Text style={styles.title}>Contactos</Text>
-      <TextInput style={styles.search} placeholder="Search"
-      />
+      <TextInput style={styles.search} placeholder="Search" />
       <ContactList contactsData={localData} />
-      <TouchableOpacity 
-        style={styles.button} 
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => navigation.navigate("add contact")}
       >
-        <Text style={styles.plus}>
-            +
-        </Text>
+        <Text style={styles.plus}>+</Text>
       </TouchableOpacity>
     </View>
   );
@@ -51,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 74,
     paddingHorizontal: 24,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
   pic: {
     width: 54,
@@ -91,10 +116,10 @@ const styles = StyleSheet.create({
   },
 
   plus: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 34,
-    position: 'absolute',
+    position: "absolute",
     top: -2,
     left: 10,
-  }
+  },
 });
