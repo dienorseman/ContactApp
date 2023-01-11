@@ -73,21 +73,28 @@ export const AddContact = ({ navigation }) => {
               Authorization: "Bearer " + token,
             },
           };
-          axios
-            .post("http://192.168.1.144:8000/contact/contacts/", {
-              name: name,
-              last_name: lastName,
-              email: email,
-              phone_number: phoneNumber,
-            }, headers)
-            .then(async (res) => {
-              console.log(res)
-              navigation.navigate("Main");
-            })
-            .catch((errors) => console.log(errors));
+          if (token || token != "") {
+            console.log(token)
+            axios
+              .post(
+                "https://safe-contact-cblnbu253a-uc.a.run.app/contact/contacts/",
+                {
+                  name: name,
+                  last_name: lastName,
+                  email: email,
+                  phone_number: phoneNumber,
+                },
+                headers
+              )
+              .then(async (res) => {
+                console.log(res);
+                navigation.navigate("Main");
+              })
+              .catch((errors) => console.log(errors));
+          }
         }}
       >
-        <Text style={{ color: "#fff", textAlign: "center" }}>Add</Text>
+        <Text style={{ color: "#fff", textAlign: "center" }}>Add </Text>
       </TouchableOpacity>
     </View>
   );

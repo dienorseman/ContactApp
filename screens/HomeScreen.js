@@ -12,6 +12,7 @@ import ContactList from "../components/ContactList";
 import { contactsData } from "../data/contacts";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ip } from "../App";
 
 export default function HomeScreen({ navigation }) {
   useEffect(function () {
@@ -39,7 +40,7 @@ export default function HomeScreen({ navigation }) {
 
       console.log("\ntoken:" + token + "\n");
       axios
-        .get("http://192.168.1.144:8000/contact/contacts/", headers)
+        .get("https://safe-contact-cblnbu253a-uc.a.run.app/contact/contacts/", headers)
         .then((res) => {
           setlocalData(res.data);
         })

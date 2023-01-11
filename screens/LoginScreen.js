@@ -9,6 +9,7 @@ import {
 
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ip } from "../App";
 
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -58,8 +59,8 @@ export const LoginScreen = ({ navigation }) => {
         style={styles.loginButton}
         onPress={() => {
           axios
-            .post("http://192.168.1.144:8000/api/auth/login", {
-              email: email,
+            .post("https://safe-contact-cblnbu253a-uc.a.run.app/api/auth/login", {
+              username: email,
               password: passWord,
             })
             .then(async (res) => {

@@ -18,3 +18,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+export const ip = '172.20.10.3:19000';
