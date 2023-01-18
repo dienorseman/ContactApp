@@ -8,11 +8,10 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import ContactList from "../components/ContactList";
-import { contactsData } from "../data/contacts";
+import ContactList from "../components/ContactList";  
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ip } from "../App";
+
 
 export default function HomeScreen({ navigation }) {
   useEffect(function () {
@@ -22,12 +21,17 @@ export default function HomeScreen({ navigation }) {
         return a.name > b.name;
       })
     );
+    getUserData()
   }, []);
 
   const [localData, setlocalData] = useState([]);
 
   let headers = {};
   let token = "";
+
+  const getUserData = () => {
+    console.log('holaaaaa');
+  };
 
   async function getToken() {
     try {
@@ -37,10 +41,11 @@ export default function HomeScreen({ navigation }) {
           Authorization: "Bearer " + token,
         },
       };
-
-      console.log("\ntoken:" + token + "\n");
       axios
-        .get("https://safe-contact-cblnbu253a-uc.a.run.app/contact/contacts/", headers)
+        .get(
+          "https://safe-contact-cblnbu253a-uc.a.run.app/contact/contacts/",
+          headers
+        )
         .then((res) => {
           setlocalData(res.data);
         })
@@ -49,7 +54,6 @@ export default function HomeScreen({ navigation }) {
       console.log(error);
     }
   }
-
 
   return (
     <View style={styles.container}>

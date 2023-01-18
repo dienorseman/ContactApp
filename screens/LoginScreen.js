@@ -9,7 +9,6 @@ import {
 
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ip } from "../App";
 
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -29,7 +28,7 @@ export const LoginScreen = ({ navigation }) => {
         <Text style={styles.inputTitle}>Email</Text>
         <TextInput
           style={styles.textInput}
-          placeholder="johnDoe@email.com"
+          placeholder="johnDoe99@email.com"
           placeholderTextColor="#00000030"
           onChangeText={(text) => {
             setEmail(text);
@@ -60,7 +59,7 @@ export const LoginScreen = ({ navigation }) => {
         onPress={() => {
           axios
             .post("https://safe-contact-cblnbu253a-uc.a.run.app/api/auth/login", {
-              username: email,
+              email: email,
               password: passWord,
             })
             .then(async (res) => {
